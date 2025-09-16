@@ -6,8 +6,8 @@ Goals:
 - callbacks 
 	- setTimeout 
 - promises 
-	- sequential promises 
-	- parallel promises 
+	- sequential promises - ".then"
+	- parallel promises - "Promise.all()"
 - fetch 
 - async/await syntax 
 

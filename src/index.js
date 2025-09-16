@@ -40,6 +40,19 @@ console.log("Page loaded!");
 // Make API requests to this endpoint to get Pokemon data:
 // https://pokeapi.co/api/v2/pokemon/
 
+async function asyncGetPokemonData(targetPokemon){
+	let response = await fetch("https://pokeapi.co/api/v2/pokemon/" + targetPokemon);
+	let data = await response.json();
+	console.log(data);
+	return data;
+}
+
+// asyncGetPokemonData("pikachu").then((pikachuData) => {
+// 	console.log("pikachuData is: \n" + JSON.stringify(pikachuData, null, 4));
+// });
+
+
+
 function getPokemonData(targetPokemon){
 	let result = fetch("https://pokeapi.co/api/v2/pokemon/" + targetPokemon).then((response) => {
 		console.log(response);
@@ -61,8 +74,57 @@ function getPokemonData(targetPokemon){
 
 }
 
+async function asyncGetMultiplePokemon(){
+	
+	// Parallel fetch requests:
+	// let allResult = await Promise.all(
+	// 	favouritePokemon.map((individualName) => {
+	// 		return fetch("https://pokeapi.co/api/v2/pokemon/" + individualName).then((response) => response.json())
+	// 	})
+	// );
+	// console.log(allResult);
+
+	// Sequential fetch requests:
+	let allResultSequential = [];
+
+	favouritePokemon.forEach(async (individualName) => {
+		let response = await fetch("https://pokeapi.co/api/v2/pokemon/" + individualName);
+		let data = await response.json();
+		allResultSequential.push(data);
+		console.log("Adding this Pokemon to the allResultSequential now: " + data.name);
+		console.log(allResultSequential.length);
+
+	});
+
+	console.log(allResultSequential);
+	console.log(allResultSequential.length);
+}
+
+asyncGetMultiplePokemon();
+
+function getMultiplePokemon(){
+	Promise.all(
+		favouritePokemon.map((individualName) => {
+			return fetch("https://pokeapi.co/api/v2/pokemon/" + individualName).then((response) => response.json())
+		})
+	).then((allResult) => {
+		console.log(allResult);
+	});
+
+
+	// Promise.all([
+	// 	fetch("https://pokeapi.co/api/v2/pokemon/" + "pikachu").then((response) => response.json()),
+	// 	fetch("https://pokeapi.co/api/v2/pokemon/" + "squirtle").then((response) => response.json()),
+	// 	fetch("https://pokeapi.co/api/v2/pokemon/" + "blastoise").then((response) => response.json()),
+	// ]).then((allResult) => {
+	// 	console.log(allResult);
+	// });
+}
+
+// getMultiplePokemon();
+
 // function add(num1, num2){
 // 	return num1 + num2;
 // }
 
-getPokemonData("pikachu");
+// getPokemonData("pikachu");
